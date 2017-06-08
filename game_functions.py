@@ -60,19 +60,19 @@ def update_bullets(aliens, bullets):
     pygame.sprite.groupcollide(bullets, aliens, True, True)
 
 
-def update_bullets2(ship, bullets):
+def update_bullets2(ship, bullets, state):
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.top >= ship.ai_settings.screen_height:
             bullets.remove(bullet)
     if pygame.sprite.spritecollideany(ship, bullets):
-        print("game over")
+        state.game_active = False
 
 
-def update_aliens(aliens, ship, i):
+def update_aliens(aliens, ship, i, state):
     aliens.update(i)
     if pygame.sprite.spritecollideany(ship, aliens):
-        print("game over")
+        state.game_active = False
 
 
 def create_alien(ai_settings, screen, aliens, bullets):
