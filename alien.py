@@ -19,6 +19,8 @@ class Alien(Sprite):
         self.rect.y = self.rect.height
         self.x = float(self.rect.x)
         self.y = float(self.rect.y)
+        new_bullet = Bullet(self.ai_settings, self.screen, self, 1)
+        self.bullets.add(new_bullet)
 
     def shoot(self):
         new_bullet = Bullet(self.ai_settings, self.screen, self, 1)
