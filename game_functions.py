@@ -31,7 +31,17 @@ def check_keyup_events(event, ship):
         ship.is_shoot = False
 
 
-def check_events(ai_settings, screen, ship):
+def check_play_button(state, play_button, mouse_x, mouse_y, aliens, ship, bullets, bullets2):
+    if play_button.rect.collidepoint(mouse_x, mouse_y):
+        state.game_active = True
+
+        aliens.empty()
+        bullets.empty()
+        bullets2.empty()
+        ship.center_ship()
+
+
+def check_events(ai_settings, screen, ship, state, play_button, aliens, bullets, bullets2):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -39,9 +49,12 @@ def check_events(ai_settings, screen, ship):
             check_keydown_events(event, ai_settings, screen, ship)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(state, play_button, mouse_x, mouse_y, aliens, ship, bullets, bullets2)
 
 
-def update_screen(ai_settings, screen, ship, aliens, bullets, bullets2):
+def update_screen(ai_settings, screen, ship, aliens, bullets, bullets2, play_button, game_state):
     screen.fill(ai_settings.bg_color)
     for bullet in bullets.sprites():
         bullet.draw_bullet()
@@ -49,6 +62,8 @@ def update_screen(ai_settings, screen, ship, aliens, bullets, bullets2):
         bullet.draw_bullet()
     ship.blitme()
     aliens.draw(screen)
+    if not game_state.game_active:
+        play_button.draw_button()
     pygame.display.flip()
 
 

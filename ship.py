@@ -26,6 +26,11 @@ class Ship(object):
         self.moving_bottom = False
         self.is_shoot = False
 
+    def center_ship(self):
+        self.rect.centerx = self.screen_rect.centerx
+        self.rect.centery = self.screen_rect.centery
+        self.rect.bottom = self.screen_rect.bottom
+
     def shoot(self):
         new_bullet = Bullet(self.ai_settings, self.screen, self, 0)
         self.bullets.add(new_bullet)

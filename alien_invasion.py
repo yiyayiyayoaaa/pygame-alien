@@ -7,13 +7,13 @@ from alien import Alien
 import game_functions as gf
 from pygame.sprite import Group
 from pygame.locals import *
-
+from button import Button
 
 def run_game():
     # 初始化游戏并创建一个屏幕对象
     pygame.init()
     ai_settings = Settings()
-    game_state = GameState()
+    game_state = GameState(ai_settings)
     screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
     clock = pygame.time.Clock()
@@ -21,6 +21,7 @@ def run_game():
     bullets2 = Group()
     aliens = Group()
     ship = Ship(ai_settings, screen, bullets)
+    play_button = Button(ai_settings, screen, "Play")
     #ship_shoot_thread = threading.Thread(target=show_bullets,args=(ship,))
     # 开始游戏的主循环
     i = 72
@@ -29,7 +30,7 @@ def run_game():
     while True:       
         # 监听键盘和鼠标事件
         clock.tick(ai_settings.FRAME_RATE)
-        gf.check_events(ai_settings, screen, ship)
+        gf.check_events(ai_settings, screen, ship, game_state, play_button, aliens, bullets, bullets2)
         if game_state.game_active:
             # 每次循环都重绘屏幕, 让最近绘制的屏幕可见
             ship.update(i)
@@ -40,7 +41,7 @@ def run_game():
                 gf.create_alien(ai_settings, screen, aliens, bullets2)
                 i = 0
             i += 1
-        gf.update_screen(ai_settings, screen, ship, aliens, bullets, bullets2)
+        gf.update_screen(ai_settings, screen, ship, aliens, bullets, bullets2, play_button, game_state)
 
 if __name__ == '__main__':
     run_game()
